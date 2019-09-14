@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -45,13 +44,13 @@ namespace CalamityYoyoBagBuffed.Projectiles
 
         public override void AI()
         {
-            this.drawOffsetX = -10;
-            this.drawOriginOffsetY = 0;
-            this.drawOriginOffsetX = 0f;
+            drawOffsetX = -10;
+            drawOriginOffsetY = 0;
+            drawOriginOffsetX = 0f;
             if (projectile.timeLeft == Lifetime)
             {
                 projectile.ai[0] = 0f;
-                this.SpawnDust();
+                SpawnDust();
             }
             float num = projectile.ai[1];
             projectile.direction = ((num <= 0f) ? 1 : -1);
@@ -63,7 +62,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
             {
                 projectile.scale *= 0.92f;
             }
-            this.HomingAI();
+            HomingAI();
         }
 
         private void HomingAI()
@@ -71,9 +70,9 @@ namespace CalamityYoyoBagBuffed.Projectiles
             int num = (int)projectile.ai[0] - 1;
             if (num < 0)
             {
-                num = this.AcquireTarget();
+                num = AcquireTarget();
             }
-            projectile.ai[0] = (float)num + 1f;
+            projectile.ai[0] = num + 1f;
             if (num < 0)
             {
                 projectile.velocity *= 0.94f;
@@ -82,13 +81,13 @@ namespace CalamityYoyoBagBuffed.Projectiles
             NPC npc = Main.npc[num];
             float offsetX = projectile.Center.X - npc.Center.X;
             float offsetY = projectile.Center.Y - npc.Center.Y;
-            float distance = (float)Math.Sqrt((double)(offsetX * offsetX + offsetY * offsetY));
+            float distance = (float)Math.Sqrt(offsetX * offsetX + offsetY * offsetY);
             if (distance > HomingBreakRange)
             {
                 projectile.ai[0] = 0f;
                 return;
             }
-            float scaleFactor = this.CalcHomingFactor(distance);
+            float scaleFactor = CalcHomingFactor(distance);
             Vector2 vector = npc.Center - projectile.Center;
             vector = vector.SafeNormalize(Vector2.Zero);
             vector *= scaleFactor;
@@ -113,7 +112,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                 {
                     float offsetX = projectile.Center.X - npc.Center.X;
                     float offsetY = projectile.Center.Y - npc.Center.Y;
-                    float distance = (float)Math.Sqrt((double)(offsetX * offsetX + offsetY * offsetY));
+                    float distance = (float)Math.Sqrt(offsetX * offsetX + offsetY * offsetY);
                     if (distance < homingStartRange)
                     {
                         if (npc.boss)
@@ -147,8 +146,8 @@ namespace CalamityYoyoBagBuffed.Projectiles
 
         public override void PostDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            float x = (float)(projectile.width) / 2f;
-            float y = (float)projectile.height / 2f;
+            float x = projectile.width / 2f;
+            float y = projectile.height / 2f;
             SpriteEffects effects = SpriteEffects.None;
             if (projectile.spriteDirection == -1)
             {
@@ -160,7 +159,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
 
         public override void Kill(int timeLeft)
         {
-            this.SpawnDust();
+            SpawnDust();
         }
 
         private void SpawnDust()
@@ -201,8 +200,8 @@ namespace CalamityYoyoBagBuffed.Projectiles
                         {
                             Color color2 = color;
                             color2 = projectile.GetAlpha(color2);
-                            float num3 = (float)(num2 - i);
-                            color2 *= num3 / ((float)ProjectileID.Sets.TrailCacheLength[projectile.type] * 1.5f);
+                            float num3 = num2 - i;
+                            color2 *= num3 / (ProjectileID.Sets.TrailCacheLength[projectile.type] * 1.5f);
                             Main.spriteBatch.Draw(texture2D, projectile.oldPos[i] + projectile.Size / 2f - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Rectangle?(rectangle), color2, projectile.rotation, rectangle.Size() / 2f, projectile.scale, effects, 0f);
                         }
                     }
@@ -212,12 +211,12 @@ namespace CalamityYoyoBagBuffed.Projectiles
                     for (int j = 0; j < projectile.oldPos.Length; j++)
                     {
                         Vector2 position = projectile.oldPos[j] + projectile.Size / 2f - Main.screenPosition + new Vector2(0f, projectile.gfxOffY);
-                        Color color3 = projectile.GetAlpha(lightColor) * ((float)(projectile.oldPos.Length - j) / (float)projectile.oldPos.Length);
+                        Color color3 = projectile.GetAlpha(lightColor) * ((projectile.oldPos.Length - j) / (float)projectile.oldPos.Length);
                         Main.spriteBatch.Draw(texture2D, position, new Rectangle?(rectangle), color3, projectile.rotation, rectangle.Size() / 2f, projectile.scale, effects, 0f);
                     }
                 }
             }
-            Main.spriteBatch.Draw(texture2D, projectile.Center - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Rectangle?(new Rectangle(0, y, texture2D.Width, num)), projectile.GetAlpha(lightColor), projectile.rotation, new Vector2((float)texture2D.Width / 2f, (float)num / 2f), projectile.scale, effects, 0f);
+            Main.spriteBatch.Draw(texture2D, projectile.Center - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Rectangle?(new Rectangle(0, y, texture2D.Width, num)), projectile.GetAlpha(lightColor), projectile.rotation, new Vector2(texture2D.Width / 2f, num / 2f), projectile.scale, effects, 0f);
         }
 
         public override void OnHitPvp(Player target, int damage, bool crit)

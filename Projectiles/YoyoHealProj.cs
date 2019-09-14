@@ -31,7 +31,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                             heal = damage;
                             player.AddBuff(BuffID.Heartreach, 18000, false); // For testing purposes only - gives visible indication that the effect has activated
                         }
-                        NetMessage.SendData(66, -1, -1, null, ((int)projectile.ai[0]), (float)heal, 0f, 0f, 0, 0, 0);
+                        NetMessage.SendData(66, -1, -1, null, ((int)projectile.ai[0]), heal, 0f, 0f, 0, 0, 0);
                     }
                     projectile.Kill();
                 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -34,7 +33,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
             projectile.penetrate = -1; // Do not use projectile.maxPenetrate as it bugs the yoyo out, causing it to retract after just one hit
             projectile.melee = true;
             projectile.scale = 1f;
-            projectile.tileCollide = false;;
+            projectile.tileCollide = false; ;
             projectile.light = 1f;
             drawOffsetX = -62;
             drawOriginOffsetY = -62;
@@ -44,8 +43,8 @@ namespace CalamityYoyoBagBuffed.Projectiles
 
         internal int YoyoWhoAmI // We'll set the index of the current projectile to this name. // Note: => is shortened form of {}. So "get =>" would be the same as "get {}"
         {
-            get => this.projectile.whoAmI; // Main.projectile[i].whoAmI; This retrieves the index value of Main.projectile[] for this projectile instance (i.e. when it is active, hence the ai[1]).
-            set => this.projectile.whoAmI = value; // ...and sets YoyoWhoAmI as the retrieved value.
+            get => projectile.whoAmI; // Main.projectile[i].whoAmI; This retrieves the index value of Main.projectile[] for this projectile instance (i.e. when it is active, hence the ai[1]).
+            set => projectile.whoAmI = value; // ...and sets YoyoWhoAmI as the retrieved value.
         }
 
         // **notes for aiStyle 99:**
@@ -72,9 +71,9 @@ namespace CalamityYoyoBagBuffed.Projectiles
                 if (projectile.localAI[1] >= 6f) // If the projectile's (usage?) timer has been extended to 6/60 (0.1) seconds or beyond... 
                 {
                     Vector2 vector = projectile.velocity; // Vector: a quantity possessing both magnitude and direction, represented by an arrow for direction and a length which is the magnitude. Basically dictates projectile VELOCITY, which is SPEED in a given DIRECTION.
-                    Vector2 vector2 = new Vector2((float)Main.rand.Next(-100, 101), (float)Main.rand.Next(-100, 101)); // Creates a new velocity for the spawned HomingProj. Main.rand.Next returns a random # (projectile's speed) between -100 & 101 and does it for X (horizontal direction) and Y (vertical direction). Mimics the randomly sprewing projectiles from the Terrarian.
+                    Vector2 vector2 = new Vector2(Main.rand.Next(-100, 101), Main.rand.Next(-100, 101)); // Creates a new velocity for the spawned HomingProj. Main.rand.Next returns a random # (projectile's speed) between -100 & 101 and does it for X (horizontal direction) and Y (vertical direction). Mimics the randomly sprewing projectiles from the Terrarian.
                     vector2.Normalize(); // To normalize a vector, is to take a vector of any length (e.g. speed) and, keeping it pointing in the same direction, change its length, turning it into what is called a unit vector. Since it describes a vector’s direction without regard to its length, it’s useful to have the unit vector readily accessible.
-                    vector2 *= (float)Main.rand.Next(10, 41) * 0.5f; // Since vector2 is normalized, this modifies the randomly-spewed projectiles' speed coming off the yoyo, but not their direction. Speed is a random value b/w 10 & 41, then divided in half.
+                    vector2 *= Main.rand.Next(10, 41) * 0.5f; // Since vector2 is normalized, this modifies the randomly-spewed projectiles' speed coming off the yoyo, but not their direction. Speed is a random value b/w 10 & 41, then divided in half.
                     if (Main.rand.Next(3) == 0) // Returns a random number between 0 and 3. If 0 (1/4 chance), executes the following code.
                     {
                         vector2 *= 1.4f; // Makes some of the randomly-spewed projectiles go 140% the speed of what they normally would have done.

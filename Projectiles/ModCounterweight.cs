@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace CalamityYoyoBagBuffed.Projectiles
@@ -42,9 +40,9 @@ namespace CalamityYoyoBagBuffed.Projectiles
                 if (projectile.localAI[1] >= 6f) // If the projectile's (usage?) timer has been extended to 6/60 (0.1) seconds or beyond... 
                 {
                     Vector2 vector = projectile.velocity; // Vector: a quantity possessing both magnitude and direction, represented by an arrow for direction and a length which is the magnitude. Basically dictates projectile VELOCITY, which is SPEED in a given DIRECTION.
-                    Vector2 vector2 = new Vector2((float)Main.rand.Next(-100, 101), (float)Main.rand.Next(-100, 101)); // Creates a new velocity for the spawned HomingProj. Main.rand.Next returns a random # (projectile's speed) between -100 & 101 and does it for X (horizontal direction) and Y (vertical direction). Mimics the randomly sprewing projectiles from the Terrarian.
+                    Vector2 vector2 = new Vector2(Main.rand.Next(-100, 101), Main.rand.Next(-100, 101)); // Creates a new velocity for the spawned HomingProj. Main.rand.Next returns a random # (projectile's speed) between -100 & 101 and does it for X (horizontal direction) and Y (vertical direction). Mimics the randomly sprewing projectiles from the Terrarian.
                     vector2.Normalize(); // To normalize a vector, is to take a vector of any length (e.g. speed) and, keeping it pointing in the same direction, change its length, turning it into what is called a unit vector. Since it describes a vector’s direction without regard to its length, it’s useful to have the unit vector readily accessible.
-                    vector2 *= (float)Main.rand.Next(10, 41) * 0.25f; // Since vector2 is normalized, this modifies the randomly-spewed projectiles' speed coming off the yoyo, but not their direction. Speed is a random value b/w 10 & 41, then get 1/4 of that.
+                    vector2 *= Main.rand.Next(10, 41) * 0.25f; // Since vector2 is normalized, this modifies the randomly-spewed projectiles' speed coming off the yoyo, but not their direction. Speed is a random value b/w 10 & 41, then get 1/4 of that.
                     if (Main.rand.Next(3) == 0) // Returns a random number b/w 0 and 3. If 0 (1/4 chance), executes the following code.
                     {
                         vector2 *= 1.4f; // Makes some of the randomly-spewed projectiles go 140% the speed of what they normally would have done.

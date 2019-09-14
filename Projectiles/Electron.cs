@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -41,7 +40,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
             projectile.usesLocalNPCImmunity = true;
             projectile.localNPCHitCooldown = 2;
             projectile.light = 1f;
-            projectile.alpha = 100; // 0 is completely opaque, 255 is completely transparent
+            projectile.alpha = 80; // 0 is completely opaque, 255 is completely transparent
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -76,7 +75,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                 if (projectile.timeLeft == Lifetime) // If this projectile's time left equals its set lifespan (i.e its active-time is up), execute the following code.
                 {
                     projectile.ai[0] = 0f; // for example, ai[0] being negative makes a yoyo move back towards the player (i.e. when the yoyo is killed). If this projectile's time is up, ai[0] being zero must mean it is simply set as inactive.
-                    projectile.ai[1] = (float)this.GetPhotonDelay(); // Determines the length of time the homing projectile "Photon" stays active for.
+                    projectile.ai[1] = GetPhotonDelay(); // Determines the length of time the homing projectile "Photon" stays active for.
                 }
                 if (Main.rand.Next(3) == 0) // Returns a random non-negative integer from 0 to 3 every tick. If zero (1/4 chance), execute the following code. This block of code creates the dust particles.
                 {
@@ -108,11 +107,11 @@ namespace CalamityYoyoBagBuffed.Projectiles
                     //projIndex = YoyoProjectileIndex; // Set the projectile whoAmI (i.e. Caches the projectile that is of the "projIndex" index for later access)
                     //NetMessage.SendData(23, -1, -1, null, YoyoProjectileIndex, 0f, 0f, 0f, 0, 0, 0); // What does this do?
                     Projectile yoyoProjectile = Main.projectile[YoyoProjectileIndex];
-                    Vector2 yoyoCenter = new Vector2(yoyoProjectile.position.X + (float)yoyoProjectile.width * 0.5f, yoyoProjectile.position.Y + (float)yoyoProjectile.height * 0.5f);
+                    Vector2 yoyoCenter = new Vector2(yoyoProjectile.position.X + yoyoProjectile.width * 0.5f, yoyoProjectile.position.Y + yoyoProjectile.height * 0.5f);
                     //Vector2 yoyoCenter = Main.screenPosition + new Vector2((float)Main.mouseX, (float)Main.mouseY); // This technically works, just not the way I'd prefer because it follows the mouse rather than the yoyo. Also, laggy.
                     float offsetX = yoyoCenter.X - base.projectile.Center.X;
                     float offsetY = yoyoCenter.Y - base.projectile.Center.Y;
-                    float distance = (float)Math.Sqrt((double)(offsetX * offsetX + offsetY * offsetY));
+                    float distance = (float)Math.Sqrt(offsetX * offsetX + offsetY * offsetY);
                     float reboundMaxDistance = 3000f;
                     if (distance > reboundMaxDistance)
                     {
@@ -129,7 +128,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                         if (base.projectile.velocity.X < 0f && offsetX > 0f)
                         {
                             Projectile projectile = base.projectile;
-                            projectile.velocity.X = projectile.velocity.X + num2;
+                            projectile.velocity.X += num2;
                         }
                     }
                     else if (base.projectile.velocity.X > offsetX)
@@ -138,7 +137,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                         if (projectile.velocity.X > 0f && offsetX < 0f)
                         {
                             Projectile projectile2 = projectile;
-                            projectile2.velocity.X = projectile2.velocity.X - num2;
+                            projectile2.velocity.X -= num2;
                         }
                     }
                     if (base.projectile.velocity.Y < offsetY)
@@ -147,7 +146,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                         if (projectile.velocity.Y < 0f && offsetY > 0f)
                         {
                             Projectile projectile3 = projectile;
-                            projectile3.velocity.Y = projectile3.velocity.Y + num2;
+                            projectile3.velocity.Y += num2;
                         }
                     }
                     else if (base.projectile.velocity.Y > offsetY)
@@ -156,7 +155,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                         if (projectile.velocity.Y > 0f && offsetY < 0f)
                         {
                             Projectile projectile4 = projectile;
-                            projectile4.velocity.Y = projectile4.velocity.Y - num2;
+                            projectile4.velocity.Y -= num2;
                         }
                     }
                     if (Main.myPlayer == base.projectile.owner && base.projectile.Hitbox.Intersects(yoyoProjectile.Hitbox))
@@ -167,7 +166,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                 if (base.projectile.ai[1] <= 0f)
                 {
                     ElectronPositronAnnihilation(); // Spawns the homing projectile "Photon" from the main projectile "Electron"
-                    projectile.ai[1] = (float)this.GetPhotonDelay();
+                    projectile.ai[1] = GetPhotonDelay();
                 }
                 float spinDirection = (base.projectile.direction <= 0) ? -1f : 1f; // ? is a conditional operator. If projectile direction is less than or equal to zero, set num6 to be -1. Otherwise, set num6 to be 1.
                 base.projectile.rotation += spinDirection * ElectronSpinIncrement;
