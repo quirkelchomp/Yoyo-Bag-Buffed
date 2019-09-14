@@ -10,6 +10,7 @@ v0.1.2 = bug fixes, added experimental counterweights, additional balancing adju
 v0.2.0 = bug fixes, added experimental buffs, gave the yoyo bags proper names, gave Yoyo Bag v2 (now renamed Super Yoyo Bag) a much-needed buff, and crafting recipes finally done! 
 v0.2.1 = removed game-breaking test items 
 v0.3.0 = Implemented a small work-around for increasing yoyo range, buffed the final yoyo bag upgrade with a custom counterweight, added custom sprites!
+v0.3.1 = Attempt at making mod icon upload to Mod Browser
 
 
 
