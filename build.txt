@@ -1,0 +1,3 @@
+displayName = Calamity Yoyo Bag Buffed
+author = Quirkelchomp
+version = 0.3.0

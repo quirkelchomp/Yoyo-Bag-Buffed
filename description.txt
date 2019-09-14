@@ -1,0 +1,28 @@
+*This mod is still incomplete. Yoyo range extensions have not yet been fully implemented (still buggy). Multiplayer compatibilty is still being tested. Balancing is also being tested and tweaked.*
+
+Calamity Yoyo Bag Buffed is a mod that strengthens the effects of the yoyo bag for the Calamity Mod so that yoyo users are not forced to rely on other weapon types to progress in certain more-difficult sections of the game. This mod creates four new yoyo bags meant to be crafted post-Moonlord. Use the Guide NPC to assist with crafting recipes.
+
+Changelog:
+
+v0.1.0 = initial test release
+v0.1.1 = bug fixes, added vanilla counterweights, balancing adjustments
+v0.1.2 = bug fixes, added experimental counterweights, additional balancing adjustments
+v0.2.0 = bug fixes, added experimental buffs, gave the yoyo bags proper names, gave Yoyo Bag v2 (now renamed Super Yoyo Bag) a much-needed buff, and crafting recipes finally done! 
+v0.2.1 = removed game-breaking test items 
+v0.3.0 = Implemented a small work-around for increasing yoyo range, buffed the final yoyo bag upgrade with a custom counterweight, added custom sprites!
+
+
+
+*spoilers below*
+
+*spoilers below*
+
+*spoilers below*
+
+*spoilers below*
+
+
+One can be crafted immediately post-Moonlord.
+One can be crafted post-Providence.
+One can be crafted post-Devourer.
+One can be crafted post-Yharon.
