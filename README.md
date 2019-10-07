@@ -1,2 +1,2 @@
 # Yoyo-Bag-Buffed
-Yoyo bag upgrade mod for mod-altered Terraria game-types that make the game more difficult.
+Yoyo bag upgrade mod meant for use with increased difficulty modded Terraria game-types.
