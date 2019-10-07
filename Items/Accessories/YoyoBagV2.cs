@@ -1,3 +1,4 @@
+using CalamityYoyoBagBuffed.Items.Weapons;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,7 +9,7 @@ namespace CalamityYoyoBagBuffed.Items.Accessories
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Super Yoyo Bag"); // By default, capitalization in classnames will add spaces to the display name.
+            DisplayName.SetDefault("Super Yoyo Bag");
             Tooltip.SetDefault("5% increased melee damage" +
                                "\n5% increased melee critical strike chance" +
                                "\nSlightly increases movement speed");
@@ -45,12 +46,20 @@ namespace CalamityYoyoBagBuffed.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.counterWeight = 556 + Main.rand.Next(6); // 556 is projectileID of black counterweight. Main.rand.Next(6) makes it so it has a chance to be any one of the 6 projectileIDs including 556 and thereafter (i.e. the other counterweight colors)
-            player.yoyoGlove = true;
+            if (Main.player[item.owner].inventory[Main.player[item.owner].selectedItem].type == mod.ItemType<NucleusItem>() && item.owner == Main.myPlayer)
+            {
+                player.counterWeight = ProjectileID.BlackCounterweight + Main.rand.Next(6); // 556 (blackcounterweight ID) plus a random number from 0 to 6 (556 to 561)(i.e. all the counterweight colors)
+                player.yoyoGlove = false;
+            }
+            else
+            {
+                player.counterWeight = ProjectileID.BlackCounterweight + Main.rand.Next(6);
+                player.yoyoGlove = true;
+            }
             player.yoyoString = true;
-            player.allDamage *= 1.05f; // multiplies damage by 1.05
+            player.minionDamage *= 1.05f; // multiplies summoning damage by 1.05
             player.meleeDamage *= 1.05f; // multiplies melee damage by 1.05
-            player.meleeCrit += 5; // add 5% crit chance
+            player.meleeCrit += 5; // add 5% crit chance. Player has a base crit chance of 4.
             player.meleeDamageMult *= 3f; // changes crit damage from default of 2f (2x damage) to 3x
             while (player.meleeSpeed < 1.5f)
             {

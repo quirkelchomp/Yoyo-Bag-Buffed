@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace CalamityYoyoBagBuffed.Projectiles
@@ -8,14 +9,9 @@ namespace CalamityYoyoBagBuffed.Projectiles
     {
         //private bool text;
 
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Mod Counterweight");
-        }
-
         public override void SetDefaults()
         {
-            projectile.extraUpdates = 1;
+            projectile.extraUpdates = 3;
             projectile.width = 12;
             projectile.height = 12;
             projectile.aiStyle = 99;
@@ -26,13 +22,12 @@ namespace CalamityYoyoBagBuffed.Projectiles
             projectile.counterweight = true;
         }
 
-        public override void AI()
+        public override void AI() // Will only be called if PreAI returns true
         {
-            base.AI();
             //if (!this.text)
             //{
             //    this.text = true;
-            //    Main.NewText("ModCounterweight projectile.whoAmI is " + projectile.whoAmI, Color.PaleGreen, false); // Prints a message telling you the value of the counterweight's whoAmI for the current instance of it.
+            //    Main.NewText("ModCounterweight is " + projectile, Color.DarkSalmon, false); // Prints a message telling you the projectile's type (ID#), name, active status (t/f), whoAmI, identity, ai0, and uuid.
             //}
             if (projectile.owner == Main.myPlayer) // If you are the owner of this projectile... (This condition is important for multiplayer compatibility b/c we want it to only affect YOUR projectile)
             {
@@ -72,6 +67,16 @@ namespace CalamityYoyoBagBuffed.Projectiles
                     Projectile.NewProjectile(projectile.Center.X - vector.X, projectile.Center.Y - vector.Y, vector.X, vector.Y, mod.ProjectileType<Electron>(), projectile.damage, projectile.knockBack, projectile.owner, 0f, 0f);
                     projectile.localAI[1] = 0f; // If the above IF and FOR conditions aren't satisfied, return the projectile's animation timer back to default
                 }
+            }
+        }
+
+        public override void PostAI()
+        {
+            Player player = Main.player[projectile.owner];
+            Item item = player.inventory[player.selectedItem];
+            if (projectile.owner == Main.myPlayer && projectile.counterweight)
+            {
+                ProjectileID.Sets.YoyosMaximumRange[projectile.type] = ProjectileID.Sets.YoyosMaximumRange[item.shoot]; // player.inventory[player.selectedItem].shoot is the "projectile.type" of the currently active item.
             }
         }
     }

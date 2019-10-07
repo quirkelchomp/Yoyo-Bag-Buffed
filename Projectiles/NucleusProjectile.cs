@@ -11,16 +11,9 @@ namespace CalamityYoyoBagBuffed.Projectiles
 
         public override void SetStaticDefaults()
         {
-            // The following sets are only applicable to yoyo that use aiStyle 99.
-            // YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
-            // Vanilla values range from 3f(Wood) to 16f(Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
-            ProjectileID.Sets.YoyosLifeTimeMultiplier[projectile.type] = -1f;
-            // YoyosMaximumRange is the maximum distance the yoyo sleeps away from the player. 
-            // Vanilla values range from 130f(Wood) to 400f(Terrarian), and defaults to 200f
-            ProjectileID.Sets.YoyosMaximumRange[projectile.type] = 1200f;
-            // YoyosTopSpeed is top speed of the yoyo projectile. 
-            // Vanilla values range from 9f(Wood) to 17.5f(Terrarian), and defaults to 10f
-            ProjectileID.Sets.YoyosTopSpeed[projectile.type] = 17.5f;
+            ProjectileID.Sets.YoyosLifeTimeMultiplier[projectile.type] = -1f; // YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. Vanilla values range from 3f(Wood) to 16f(Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
+            ProjectileID.Sets.YoyosMaximumRange[projectile.type] = 1200f; // YoyosMaximumRange is the maximum distance the yoyo sleeps away from the player. Vanilla values range from 130f(Wood) to 400f(Terrarian), and defaults to 200f
+            ProjectileID.Sets.YoyosTopSpeed[projectile.type] = 17.5f; // YoyosTopSpeed is top speed of the yoyo projectile. Vanilla values range from 9f(Wood) to 17.5f(Terrarian), and defaults to 10f
         }
 
         public override void SetDefaults()
@@ -41,30 +34,27 @@ namespace CalamityYoyoBagBuffed.Projectiles
 
         //public int nucleusProjectile {get => mod.ProjectileType<NucleusProjectile>();}
 
-        internal int YoyoWhoAmI // We'll set the index of the current projectile to this name. // Note: => is shortened form of {}. So "get =>" would be the same as "get {}"
-        {
-            get => projectile.whoAmI; // Main.projectile[i].whoAmI; This retrieves the index value of Main.projectile[] for this projectile instance (i.e. when it is active, hence the ai[1]).
-            set => projectile.whoAmI = value; // ...and sets YoyoWhoAmI as the retrieved value.
-        }
+        //internal int YoyoWhoAmI // We'll set the index of the current projectile to this name. Note: => is a shortened form of {}. So "get =>" would be the same as "get {}"
+        //{
+        //    get => projectile.whoAmI; // This retrieves the index value of Main.projectile[] for this projectile instance (i.e. when it is active, hence the ai[1]).
+        //    set => projectile.whoAmI = value; // ...and sets YoyoWhoAmI as the retrieved value.
+        //}
 
         // **notes for aiStyle 99:**
         // localAI[0] is used for timing up to YoyosLifeTimeMultiplier
         // localAI[1] can be used freely by specific types
-        // ai[0] and ai[1] usually point towards the x and y world coordinate hover point
-        // ai[0] is -1f once YoyosLifeTimeMultiplier is reached, when the player is stoned/frozen, when the yoyo is too far away, or the player is no longer clicking the shoot button.
-        // ai[0] being negative makes the yoyo move back towards the player
+        // ai[0] and ai[1] usually point towards the x and y world coordinate hover point (You use them to basically dictate the projectile's animation at a specified time)
+        // ai[0] is -1f once YoyosLifeTimeMultiplier is reached, when the player is stoned/frozen, when the yoyo is too far away, or the player is no longer clicking the shoot button. ai[0] being negative makes the yoyo move back towards the player.
         // Any AI method can be used for dust, spawning projectiles, etc specific to your yoyo.
-        public override void AI()
+        public override void AI() // Will only be called if PreAI returns true
         {
-            base.AI();
+            //YoyoWhoAmI = projectile.whoAmI; // Set the projectile whoAmI
             //if (!this.text)
             //{
             //    this.text = true;
-            //    //Main.NewText("Electron nucleusProjectile value is " + nucleusProjectile, Color.Crimson, false); // Prints a message telling you the value of the yoyo's projectileID. For reference only.
-            //    Main.NewText("NucleusProjectile projectile.whoAmI is " + projectile.whoAmI, Color.Cyan, false); // Prints a message telling you the value of the yoyo's whoAmI for the current instance of it.
-            //    Main.NewText("NucleusProjectile YoyoWhoAmI is " + YoyoWhoAmI, Color.Cyan, false); // Prints a message telling you the value of YoyoWhoAmI. Should match with the yoyo's whoAmI value.
+            //    Main.NewText("NucleusProjectile YoyoWhoAmI is " + YoyoWhoAmI, Color.Cyan, false); // Prints a message telling you the value of the held projectile's whoAmI. Should match with the projectile.whoAmI.
+            //    Main.NewText("NucleusProjectile is " + projectile, Color.DarkSalmon, false); // Prints a message telling you the projectile's type (ID#), name, active status (t/f), whoAmI, identity, ai0, and uuid.
             //}
-            YoyoWhoAmI = projectile.whoAmI; // Set the projectile whoAmI
             if (projectile.owner == Main.myPlayer) // If you are the owner of this projectile... (This condition is important for multiplayer compatibility b/c we want it to only affect YOUR projectile)
             {
                 projectile.localAI[1] += 1f; // ...add an additional 1/60 second to the timing of the projectile's AI. Many projectiles use timers to delay actions. Typically we use projectile.ai[0] or projectile.ai[1] as those values are synced automatically, but we can also use class fields as well
@@ -101,7 +91,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                     //}
                     vector *= 0.8f;
                     Projectile.NewProjectile(projectile.Center.X - vector.X, projectile.Center.Y - vector.Y, vector.X, vector.Y, mod.ProjectileType<Electron>(), projectile.damage, projectile.knockBack, projectile.owner, 0f, 0f);
-                    projectile.localAI[1] = 0f; // If the above IF and FOR conditions aren't satisfied, return the projectile's (usage?) timer back to default
+                    projectile.localAI[1] = 0f; // If the above IF and FOR conditions aren't satisfied, return the projectile's animation timer back to default
                 }
                 if (Main.rand.NextBool()) // 50/50 chance of executing the following code.
                 {
@@ -129,11 +119,6 @@ namespace CalamityYoyoBagBuffed.Projectiles
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            for (int i = 0; i < 2; i++) // This loop works to spawn healing projectiles
-            {
-                Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y - 16f, Main.rand.Next(-10, 11) * .25f, Main.rand.Next(-10, -5) * .25f, mod.ProjectileType<YoyoHealProj>(), (int)(projectile.damage * 50f), 0f, projectile.owner);
-                Main.projectile[i].tileCollide = false;
-            }
             if (Main.rand.NextBool()) // 50/50 chance of inflicting the following buff/debuff to the NPC
             {
                 target.AddBuff(BuffID.Ichor, 300, false);

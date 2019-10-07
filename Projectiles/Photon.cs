@@ -9,7 +9,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
 {
     public class Photon : ModProjectile
     {
-        private static int Lifetime = 90;
+        private static int Lifespan = 90;
         private static float MaxRotationSpeed = 0.25f;
         private static float MaxSpeed = 22f;
         private static float HomingStartRange = 600f;
@@ -35,7 +35,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
             projectile.tileCollide = false;
             projectile.penetrate = 4;
             projectile.extraUpdates = 1;
-            projectile.timeLeft = Lifetime;
+            projectile.timeLeft = Lifespan;
             projectile.usesLocalNPCImmunity = true;
             projectile.localNPCHitCooldown = 8;
             projectile.light = 1f;
@@ -47,7 +47,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
             drawOffsetX = -10;
             drawOriginOffsetY = 0;
             drawOriginOffsetX = 0f;
-            if (projectile.timeLeft == Lifetime)
+            if (projectile.timeLeft == Lifespan)
             {
                 projectile.ai[0] = 0f;
                 SpawnDust();
@@ -154,7 +154,8 @@ namespace CalamityYoyoBagBuffed.Projectiles
                 effects = SpriteEffects.FlipHorizontally;
             }
             Vector2 origin = new Vector2(x, y);
-            spriteBatch.Draw(mod.GetTexture("Projectiles/AntiPhoton"), projectile.Center - Main.screenPosition, null, default, projectile.rotation, origin, projectile.scale, effects, 100f);
+            Texture2D texture = mod.GetTexture("Projectiles/AntiPhoton");
+            spriteBatch.Draw(texture, projectile.Center - Main.screenPosition, null, Color.White, -projectile.rotation, origin, projectile.scale, effects, 100f);
         }
 
         public override void Kill(int timeLeft)

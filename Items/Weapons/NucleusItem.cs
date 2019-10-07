@@ -36,17 +36,22 @@ namespace CalamityYoyoBagBuffed.Items.Weapons
             item.noUseGraphic = true;
 
             item.UseSound = SoundID.Item1;
-            item.value = Item.sellPrice(silver: 1);
+            item.value = Item.sellPrice(platinum: 100);
             item.shoot = mod.ProjectileType<NucleusProjectile>();
         }
 
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.ItemType("TestYoyoBag"), 10);
-            recipe.AddIngredient(ItemID.Terrarian, 1);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            Mod Modloader = ModLoader.GetMod("ModLoader");
+            if (Modloader != null)
+            {
+                ModRecipe recipe = new ModRecipe(mod);
+                recipe.AddIngredient(mod.ItemType("TestYoyoBag"), 10);
+                recipe.AddIngredient(ItemID.Terrarian, 1);
+                recipe.AddIngredient(Modloader.ItemType("AprilFools"), 1);
+                recipe.SetResult(this);
+                recipe.AddRecipe();
+            }
         }
     }
 }

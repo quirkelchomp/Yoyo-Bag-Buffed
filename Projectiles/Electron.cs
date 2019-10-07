@@ -12,7 +12,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
     {
         private bool QuantumTunneling = false;
         private static float ElectronSpinIncrement = 0.22f;
-        private static int Lifetime = 240;
+        private static int Lifespan = 240;
         private static float ReboundTime = 50f;
         private static int MinPhotonTimer = 13;
         private static int MaxPhotonTimer = 18;
@@ -20,7 +20,6 @@ namespace CalamityYoyoBagBuffed.Projectiles
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.Homing[projectile.type] = true;
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 8;
             ProjectileID.Sets.TrailingMode[projectile.type] = 1;
         }
@@ -35,12 +34,12 @@ namespace CalamityYoyoBagBuffed.Projectiles
             projectile.ignoreWater = true;
             projectile.tileCollide = QuantumTunneling;
             projectile.penetrate = -1;
-            projectile.extraUpdates = 2; // Try setting it to 0 to see what the difference is
-            projectile.timeLeft = Lifetime;
+            projectile.extraUpdates = 2;
+            projectile.timeLeft = Lifespan;
             projectile.usesLocalNPCImmunity = true;
             projectile.localNPCHitCooldown = 2;
             projectile.light = 1f;
-            projectile.alpha = 80; // 0 is completely opaque, 255 is completely transparent
+            projectile.alpha = 100; // 0 is completely opaque, 255 is completely transparent
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -51,7 +50,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
 
         internal int YoyoProjectileIndex // We'll set the index of the yoyo projectile to this property name
         {
-            get => Main.player[projectile.owner].heldProj; // This retrieves the whoAmI value of the current instance your currently held projectile, which in this case is the Nucleus Yoyo projectile... 
+            get => Main.player[projectile.owner].heldProj; // This retrieves the whoAmI (i.e. index) value of the current instance your currently held projectile, which in this case is the Nucleus Yoyo projectile... 
             set => Main.player[projectile.owner].heldProj = value; // ...and sets it as a value for this class to recognize as the yoyo projectile's whoAmI in Main.Projectile[]. This allows the boomerang projectiles to find the yoyo's position as a return point.
         }
 
@@ -65,14 +64,15 @@ namespace CalamityYoyoBagBuffed.Projectiles
             //if (!this.text)
             //{
             //    this.text = true;
-            //    Main.NewText("Electron YoyoProjectile whoAmI is " + YoyoProjectile, Color.Crimson, false); // Prints a message telling you the value of the yoyo's whoAmI for the current instance of it. Must match the whoAmI from NucleusProjectile!
+            //    Main.NewText("Electron.YoyoProjectile whoAmI is " + YoyoProjectileIndex, Color.Crimson, false); // Prints a message telling you the value of the yoyo's whoAmI for the current instance of it. Must match the whoAmI from NucleusProjectile!
+            //    Main.NewText("Electron is " + projectile, Color.DarkSalmon, false); // Prints a message telling you the projectile's type (ID#), name, active status (t/f), whoAmI, identity, ai0, and uuid.
             //}
             if ((Main.player[projectile.owner].inventory[Main.player[projectile.owner].selectedItem].type == mod.ItemType<NucleusItem>() || Main.player[projectile.owner].counterWeight == mod.ProjectileType<ModCounterweight>()) && projectile.owner == Main.myPlayer)
             {
                 drawOffsetX = -11;
                 drawOriginOffsetY = -4;
                 drawOriginOffsetX = 0f;
-                if (projectile.timeLeft == Lifetime) // If this projectile's time left equals its set lifespan (i.e its active-time is up), execute the following code.
+                if (projectile.timeLeft == Lifespan) // If this projectile's animation time left equals its set lifespan (i.e its active-time is up), execute the following code.
                 {
                     projectile.ai[0] = 0f; // for example, ai[0] being negative makes a yoyo move back towards the player (i.e. when the yoyo is killed). If this projectile's time is up, ai[0] being zero must mean it is simply set as inactive.
                     projectile.ai[1] = GetPhotonDelay(); // Determines the length of time the homing projectile "Photon" stays active for.
@@ -88,9 +88,9 @@ namespace CalamityYoyoBagBuffed.Projectiles
                         scale = 0.6f + Main.rand.NextFloat(0.4f); // Scales the dust size randomly between 0.6 (60%) to 1.0 (default)
                     }
                     float scaleFactor = Main.rand.NextFloat(0.3f, 0.6f); // Sets the amount the dust grows or shrinks in size
-                    int dustIndex = Dust.NewDust(projectile.position, projectile.width, projectile.height, type, 0f, 0f, alpha, default, scale); // Sets dustIndex to be the integer that the new dust particles will be indexed as, allowing it to be sorted into the Main.dust array, making it identifiable/accessible by the game.
-                    Main.dust[dustIndex].noGravity = true; // Sets whether or not gravity affects the newly spawned dust particle.
-                    Main.dust[dustIndex].velocity = scaleFactor * projectile.velocity; // Sets the growth/shrinkage of the dust particle to scale with the velocity of the Electron projectile.
+                    int dustIndex = Dust.NewDust(projectile.position, projectile.width, projectile.height, type, 0f, 0f, alpha, default, scale); // Assigns dustIndex as the integer that the new dust particles will be indexed as, allowing it to be sorted into the Main.dust array, making it identifiable/accessible by the game.
+                    Main.dust[dustIndex].noGravity = true; // Sets whether or not gravity affects the spawned dust particle.
+                    Main.dust[dustIndex].velocity = scaleFactor * projectile.velocity; // Sets velocity (i.e. speed & direction) of the dust particle to scale with the velocity of the Electron projectile.
                     //Main.dust[dustIndex].shader = GameShaders.Armor.GetSecondaryShader(31, Main.LocalPlayer); // Applies a cool shader to the dust, changing its color & luminosity.
                 }
                 base.projectile.ai[0] += 1f;
@@ -102,13 +102,11 @@ namespace CalamityYoyoBagBuffed.Projectiles
                 if (base.projectile.ai[0] >= ReboundTime && YoyoProjectileIndex >= 0 && YoyoProjectileIndex < 1001) // If this projectile is still active (AI hasn't run its course yet), run the AI instructions below.
                 {
                     //Player player = Main.player[projectile.owner];
-                    //Player projOwner = Main.player[projectile.owner];
-                    //int projIndex = projOwner.heldProj;
+                    //int projIndex = player.heldProj;
                     //projIndex = YoyoProjectileIndex; // Set the projectile whoAmI (i.e. Caches the projectile that is of the "projIndex" index for later access)
-                    //NetMessage.SendData(23, -1, -1, null, YoyoProjectileIndex, 0f, 0f, 0f, 0, 0, 0); // What does this do?
                     Projectile yoyoProjectile = Main.projectile[YoyoProjectileIndex];
                     Vector2 yoyoCenter = new Vector2(yoyoProjectile.position.X + yoyoProjectile.width * 0.5f, yoyoProjectile.position.Y + yoyoProjectile.height * 0.5f);
-                    //Vector2 yoyoCenter = Main.screenPosition + new Vector2((float)Main.mouseX, (float)Main.mouseY); // This technically works, just not the way I'd prefer because it follows the mouse rather than the yoyo. Also, laggy.
+                    //Vector2 yoyoCenter = Main.screenPosition + new Vector2((float)Main.mouseX, (float)Main.mouseY); // This technically works, just not preferable because it follows the mouse rather than the yoyo. Also, laggy.
                     float offsetX = yoyoCenter.X - base.projectile.Center.X;
                     float offsetY = yoyoCenter.Y - base.projectile.Center.Y;
                     float distance = (float)Math.Sqrt(offsetX * offsetX + offsetY * offsetY);
@@ -181,7 +179,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
         private void ElectronPositronAnnihilation()
         {
             int type = mod.ProjectileType("Photon");
-            int damage = projectile.damage / 5; // 1200 is Nucleus's base damage and is therefore the Electron's damage. Photon's damage will be 1/5 of that.
+            int damage = projectile.damage / 5; // The origin's base damage is Electron's damage. Photon's damage will be 1/5 of that.
             float knockBack = 3f;
             float ai = (projectile.direction <= 0) ? -1f : 1f;
             float num = 16f;

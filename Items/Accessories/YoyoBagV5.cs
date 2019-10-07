@@ -10,7 +10,7 @@ namespace CalamityYoyoBagBuffed.Items.Accessories
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Master Yoyo Bag"); // By default, capitalization in classnames will add spaces to the display name.
+            DisplayName.SetDefault("Master Yoyo Bag");
             Tooltip.SetDefault("20% increased melee damage" +
                                "\n15% increased melee critical strike chance" +
                                "\nGreatly increases movement speed" +
@@ -51,17 +51,18 @@ namespace CalamityYoyoBagBuffed.Items.Accessories
         {
             if (Main.player[item.owner].inventory[Main.player[item.owner].selectedItem].type == mod.ItemType<NucleusItem>() && item.owner == Main.myPlayer)
             {
-                player.counterWeight = 556 + Main.rand.Next(6);
+                player.counterWeight = ProjectileID.BlackCounterweight + Main.rand.Next(6);
+                player.yoyoGlove = false;
             }
             else
             {
                 player.counterWeight = mod.ProjectileType<ModCounterweight>();
+                player.yoyoGlove = false;
             }
-            player.yoyoGlove = true;
             player.yoyoString = true;
-            player.allDamage *= 1.20f; // multiplies damage by 1.20
+            player.minionDamage *= 1.20f; // multiplies summoning damage by 1.20
             player.meleeDamage *= 1.20f; // multiplies melee damage by 1.20
-            player.meleeCrit += 15; // add 15% crit chance
+            player.meleeCrit += 15; // add 15% crit chance. Player has a base crit chance of 4.
             player.meleeDamageMult *= 4f; // changes crit damage from default of 2f (2x damage) to 4x
             while (player.meleeSpeed < 1.7f)
             {
@@ -72,12 +73,15 @@ namespace CalamityYoyoBagBuffed.Items.Accessories
             player.armorPenetration += 15; // add 15 to armor penetration
             player.endurance = 0.20f; // all sources do 20% less damage to you
             player.lifeRegen *= 4; // quadruples life regeneration
-            // add Arcanum of the Void's abilities
             player.maxMinions += 3;
             player.statDefense += 15;
-
-            // To assign the player the YoyoMaster effect, we can't do player.YoyoMaster = true because Player doesn't have YoyoMaster. Be sure to remember to call the GetModPlayer method to retrieve the ModPlayer instance attached to the specified Player.
-            player.GetModPlayer<YoyoModPlayer>().yoyoMaster = true;
+            if (player.yoyoString && (ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type] || player.inventory[player.selectedItem].channel && player.inventory[player.selectedItem].melee && player.inventory[player.selectedItem].useStyle == 5))
+            {
+                // To assign the player the yoyoMaster effect, we can't do player.yoyoMaster = true because the Player class doesn't have yoyoMaster as it is a vanilla class. 
+                // So be sure to remember to call the GetModPlayer method to retrieve the ModPlayer instance attached to the specified Player.
+                player.GetModPlayer<YoyoModPlayer>().yoyoMaster = true;
+                player.GetModPlayer<YoyoModPlayer>().reflectProjectile = true;
+            }
         }
     }
 }
