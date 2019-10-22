@@ -2,6 +2,7 @@ using CalamityYoyoBagBuffed.Items.Weapons;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace CalamityYoyoBagBuffed.Items.Accessories
 {
@@ -46,7 +47,7 @@ namespace CalamityYoyoBagBuffed.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (Main.player[item.owner].inventory[Main.player[item.owner].selectedItem].type == mod.ItemType<NucleusItem>() && item.owner == Main.myPlayer)
+            if (Main.player[item.owner].inventory[Main.player[item.owner].selectedItem].type == ItemType<NucleusItem>() && item.owner == Main.myPlayer)
             {
                 player.counterWeight = ProjectileID.BlackCounterweight + Main.rand.Next(6); // 556 (blackcounterweight ID) plus a random number from 0 to 6 (556 to 561)(i.e. all the counterweight colors)
                 player.yoyoGlove = false;

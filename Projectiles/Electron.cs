@@ -5,6 +5,7 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace CalamityYoyoBagBuffed.Projectiles
 {
@@ -67,7 +68,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
             //    Main.NewText("Electron.YoyoProjectile whoAmI is " + YoyoProjectileIndex, Color.Crimson, false); // Prints a message telling you the value of the yoyo's whoAmI for the current instance of it. Must match the whoAmI from NucleusProjectile!
             //    Main.NewText("Electron is " + projectile, Color.DarkSalmon, false); // Prints a message telling you the projectile's type (ID#), name, active status (t/f), whoAmI, identity, ai0, and uuid.
             //}
-            if ((Main.player[projectile.owner].inventory[Main.player[projectile.owner].selectedItem].type == mod.ItemType<NucleusItem>() || Main.player[projectile.owner].counterWeight == mod.ProjectileType<ModCounterweight>()) && projectile.owner == Main.myPlayer)
+            if ((Main.player[projectile.owner].inventory[Main.player[projectile.owner].selectedItem].type == ItemType<NucleusItem>() || Main.player[projectile.owner].counterWeight == ProjectileType<ModCounterweight>()) && projectile.owner == Main.myPlayer)
             {
                 drawOffsetX = -11;
                 drawOriginOffsetY = -4;

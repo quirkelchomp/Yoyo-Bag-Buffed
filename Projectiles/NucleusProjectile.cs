@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace CalamityYoyoBagBuffed.Projectiles
 {
@@ -90,7 +91,7 @@ namespace CalamityYoyoBagBuffed.Projectiles
                     //    }
                     //}
                     vector *= 0.8f;
-                    Projectile.NewProjectile(projectile.Center.X - vector.X, projectile.Center.Y - vector.Y, vector.X, vector.Y, mod.ProjectileType<Electron>(), projectile.damage, projectile.knockBack, projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(projectile.Center.X - vector.X, projectile.Center.Y - vector.Y, vector.X, vector.Y, ProjectileType<Electron>(), projectile.damage, projectile.knockBack, projectile.owner, 0f, 0f);
                     projectile.localAI[1] = 0f; // If the above IF and FOR conditions aren't satisfied, return the projectile's animation timer back to default
                 }
                 if (Main.rand.NextBool()) // 50/50 chance of executing the following code.

@@ -3,6 +3,7 @@ using CalamityYoyoBagBuffed.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace CalamityYoyoBagBuffed
 {
@@ -23,7 +24,7 @@ namespace CalamityYoyoBagBuffed
             Player player = Main.player[projectile.owner];
             Item selectedItem = player.inventory[player.selectedItem];
             Mod CalamityMod = ModLoader.GetMod("CalamityMod");
-            if (projectile.owner == Main.myPlayer && player.GetModPlayer<YoyoModPlayer>(mod).yoyoMaster && player.yoyoString)
+            if (projectile.owner == Main.myPlayer && player.GetModPlayer<YoyoModPlayer>().yoyoMaster && player.yoyoString)
             {
                 if ((ItemID.Sets.Yoyo[selectedItem.type] || projectile.aiStyle == 99) && (player.channel || selectedItem.channel) && projectile.melee && !projectile.counterweight && projectile.active)
                 {
@@ -31,7 +32,7 @@ namespace CalamityYoyoBagBuffed
                     //Main.NewText("player.heldProj is " + player.heldProj);
                     //Main.NewText("projectile.identity is " + projectile.identity); // The projectile's universal unique identifier, which is the same on all clients and the server. Usually used to find the same projectile on multiple clients and/or the server.
                     //Main.NewText("Projectile is " + projectile); // Prints a message telling you the projectile's type (ID#), name, active status (t/f), whoAmI, identity, ai0, and uuid.
-                    if (selectedItem.type != mod.ItemType<NucleusItem>() && projectile.type != mod.ProjectileType<ModCounterweight>())
+                    if (selectedItem.type != ItemType<NucleusItem>() && projectile.type != ProjectileType<ModCounterweight>())
                     {
                         if (selectedItem.modItem != null) // This property is null if the held item is not a modded item and not null if it is.
                         {

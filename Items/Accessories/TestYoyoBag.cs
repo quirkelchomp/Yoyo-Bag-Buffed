@@ -3,6 +3,7 @@ using CalamityYoyoBagBuffed.Projectiles;
 using Terraria; // This line lets the program know what/where the Player class is/is located
 using Terraria.ID; // TileID., ItemID., ProjectileID, etc. all pull from this directory
 using Terraria.ModLoader; // The USING keyword tells the program the directories (i.e. the namespaces) that the classes used below are coming from. Without it, the computer will be lost on what the classes even mean or do.
+using static Terraria.ModLoader.ModContent;
 
 namespace CalamityYoyoBagBuffed.Items.Accessories // The NAMESPACE is more or less is the "location" of this file
 {
@@ -49,14 +50,14 @@ namespace CalamityYoyoBagBuffed.Items.Accessories // The NAMESPACE is more or le
 
         public override void UpdateAccessory(Player player, bool hideVisual) // This function enacts changes to the game when you have this item equipped as an accessory. In parentheses, you'll notice that we're telling the program that "player" draws from the "Player" class in the vanilla Terraria files.
         {
-            if (Main.player[item.owner].inventory[Main.player[item.owner].selectedItem].type == mod.ItemType<NucleusItem>() && item.owner == Main.myPlayer)
+            if (Main.player[item.owner].inventory[Main.player[item.owner].selectedItem].type == ItemType<NucleusItem>() && item.owner == Main.myPlayer)
             {
                 player.counterWeight = ProjectileID.BlackCounterweight + Main.rand.Next(6);
                 player.yoyoGlove = false;
             }
             else
             {
-                player.counterWeight = mod.ProjectileType<ModCounterweight>();
+                player.counterWeight = ProjectileType<ModCounterweight>();
                 player.yoyoGlove = false;
             }
             player.yoyoString = true;

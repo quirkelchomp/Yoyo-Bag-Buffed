@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace CalamityYoyoBagBuffed.Items.Weapons
 {
@@ -37,7 +38,7 @@ namespace CalamityYoyoBagBuffed.Items.Weapons
 
             item.UseSound = SoundID.Item1;
             item.value = Item.sellPrice(platinum: 100);
-            item.shoot = mod.ProjectileType<NucleusProjectile>();
+            item.shoot = ProjectileType<NucleusProjectile>();
         }
 
         public override void AddRecipes()

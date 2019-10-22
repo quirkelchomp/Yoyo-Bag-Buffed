@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace CalamityYoyoBagBuffed
 {
@@ -30,7 +31,7 @@ namespace CalamityYoyoBagBuffed
             if (yoyoMaster)
             {
                 YoyoMasterEffect();
-                player.AddBuff(mod.BuffType<Buffs.YoyoMasterBuff>(), 60, true); // Buff time is # of frames (@60FPS)
+                player.AddBuff(BuffType<Buffs.YoyoMasterBuff>(), 60, true); // Buff time is # of frames (@60FPS)
             }
         }
         // To recap, make a class variable, reset that variable in ResetEffects, and use that variable in the logic of whatever hooks you use.
